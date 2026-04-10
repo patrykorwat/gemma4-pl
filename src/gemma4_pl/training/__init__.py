@@ -1,7 +1,7 @@
-"""Trainers for SFT, RLVR and RLHF stages.
+"""Causal LM trainer for the Polish text corpus.
 
-These modules are entered via `python -m bielik_r.training.<stage>` from
-the Helios SLURM scripts. Each entry point:
+This module is entered via `python -m gemma4_pl.training.sft` from the
+SLURM scripts. The entry point:
 
   1. Parses `--config` and optional dotlist overrides
   2. Loads and resolves the YAML config

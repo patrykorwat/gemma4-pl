@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=gemma4-pl-sft
-#SBATCH --account=plgbielikr2026
-#SBATCH --partition=plgrid-gpu-gh200
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=32
@@ -10,6 +8,11 @@
 #SBATCH --time=48:00:00
 #SBATCH --output=logs/slurm-sft-%j.out
 #SBATCH --error=logs/slurm-sft-%j.err
+
+# Account and partition are not hard coded. Pass them on the sbatch
+# command line so the script stays site agnostic:
+#
+#   sbatch --account=<acct> --partition=<gpu-partition> slurm/sft.sbatch
 
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:-${PWD}}"
@@ -26,8 +29,8 @@ accelerate launch \
     --num_machines 1 \
     --mixed_precision bf16 \
     --dynamo_backend no \
-    -m bielik_r.training.sft \
+    -m gemma4_pl.training.sft \
     --config config/sft.yaml \
-    --output_dir "${BIELIK_R_CHECKPOINTS}/sft"
+    --output_dir "${GEMMA4_PL_CHECKPOINTS}/sft"
 
 echo "[$(date -Is)] SFT finished"

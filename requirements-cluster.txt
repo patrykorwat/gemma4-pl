@@ -1,15 +1,15 @@
-# Pinned runtime dependencies for the Helios cluster (aarch64 GH200).
+# Pinned runtime dependencies for aarch64 GH200 (Grace Hopper) nodes.
 #
-# Before running `pip install -r requirements-helios.txt` you must load the
-# modules and create the venv as described in `slurm/env.sh`:
+# Before running `pip install -r requirements-cluster.txt` you must load
+# the modules and create the venv as described in `slurm/env.sh`:
 #
 #   module load GCC/13 Python/3.11.5 CUDA/12.9.1 cuDNN/9.19.1.2-CUDA-12.9.1
-#   python -m venv $SCRATCH/venvs/bielik-r
-#   source $SCRATCH/venvs/bielik-r/bin/activate
+#   python -m venv $SCRATCH/venvs/gemma4-pl
+#   source $SCRATCH/venvs/gemma4-pl/bin/activate
 #   pip install -U pip wheel
 #
-# PyTorch is installed separately from the NVIDIA index because the Grace
-# Hopper (sm_90) wheels are published there. Do NOT install torch from the
+# PyTorch is installed from the NVIDIA index because the Grace Hopper
+# (sm_90) wheels are published there. Do NOT install torch from the
 # default PyPI index on aarch64, the wheel is wrong.
 
 --extra-index-url https://download.pytorch.org/whl/cu129
@@ -25,7 +25,6 @@ datasets==3.1.0
 tokenizers==0.20.3
 sentencepiece==0.2.0
 huggingface_hub==0.26.2
-peft==0.13.2
 trl==0.12.1
 safetensors==0.4.5
 
@@ -34,21 +33,21 @@ deepspeed==0.15.4
 flash-attn==2.7.0.post2 ; platform_machine == "aarch64"
 triton==3.1.0 ; platform_machine == "aarch64"
 
-# Verifiers and eval
-sympy==1.13.3
+# Data pipeline
 numpy==1.26.4
 scipy==1.14.1
 pandas==2.2.3
+fasttext-wheel==0.9.2
+datasketch==1.6.5
+regex==2024.9.11
+unidecode==1.3.8
 
 # Config, logging, ops
-pydantic==2.9.2
 omegaconf==2.3.0
-hydra-core==1.3.2
 pyyaml==6.0.2
 typer==0.12.5
 rich==13.9.4
 wandb==0.18.5
-jsonlines==4.0.0
 orjson==3.10.11
 tqdm==4.66.6
 

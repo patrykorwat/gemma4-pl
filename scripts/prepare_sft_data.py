@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """Normalize, filter, and shard the raw Polish corpus for training.
 
-Reads every JSONL file under `$BIELIK_R_DATA/corpus/raw/` and produces
-shuffled shards under `$BIELIK_R_DATA/corpus/packed/train/` and one
+Reads every JSONL file under `$GEMMA4_PL_DATA/corpus/raw/` and produces
+shuffled shards under `$GEMMA4_PL_DATA/corpus/packed/train/` and one
 validation shard under `.../val/`. Each output row has the form
 `{"text": "...", "source": "..."}` so that `trl.SFTTrainer` can consume
 it via `dataset_text_field="text"`.
@@ -19,7 +19,7 @@ Heavy deps (fasttext, datasketch) are imported lazily so that the
 
 Usage:
     python scripts/prepare_sft_data.py --dry-run
-    python scripts/prepare_sft_data.py --source $BIELIK_R_DATA/corpus/raw --output $BIELIK_R_DATA/corpus/packed
+    python scripts/prepare_sft_data.py --source $GEMMA4_PL_DATA/corpus/raw --output $GEMMA4_PL_DATA/corpus/packed
 """
 
 from __future__ import annotations
@@ -111,7 +111,7 @@ def run(
 ) -> PrepareStats:
     """Run the normalization pipeline. Returns stats for reporting."""
     if source is None:
-        source = Path(os.environ.get("BIELIK_R_DATA", "./data")) / "corpus" / "raw"
+        source = Path(os.environ.get("GEMMA4_PL_DATA", "./data")) / "corpus" / "raw"
 
     stats = PrepareStats()
     print(f"[prepare_sft_data] source={source}")

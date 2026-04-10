@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from bielik_r.data.loaders import (
+from gemma4_pl.data.loaders import (
     CkeRecord,
     TextRecord,
     load_cke_dataset,

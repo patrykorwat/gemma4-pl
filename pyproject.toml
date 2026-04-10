@@ -5,21 +5,22 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gemma4-pl"
 version = "0.1.0"
-description = "Polish language adaptation of Gemma 4 E4B, trained on the Helios cluster from a Polish text corpus."
+description = "Polish language adaptation of Gemma 4 E4B, trained on a Polish text corpus."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 authors = [
     { name = "Patryk Orwat", email = "patrykorwat@gmail.com" },
 ]
-keywords = ["gemma", "polish", "language-model", "fine-tuning", "helios"]
+keywords = ["gemma", "polish", "language-model", "fine-tuning"]
 classifiers = [
     "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
-# Runtime deps intentionally loose. On Helios, use `requirements-helios.txt`
-# which pins everything and resolves correctly for aarch64 + CUDA 12.9.
+# Runtime deps intentionally loose. On the GPU cluster, use
+# `requirements-cluster.txt` which pins everything and resolves correctly
+# for aarch64 + CUDA 12.9.
 dependencies = [
     "transformers>=4.50",
     "accelerate>=0.34",
@@ -55,9 +56,9 @@ eval = [
 ]
 
 [project.scripts]
-gemma4-pl-prepare = "bielik_r.cli:prepare"
-gemma4-pl-sft = "bielik_r.cli:sft"
-gemma4-pl-eval = "bielik_r.cli:evaluate"
+gemma4-pl-prepare = "gemma4_pl.cli:prepare"
+gemma4-pl-sft = "gemma4_pl.cli:sft"
+gemma4-pl-eval = "gemma4_pl.cli:evaluate"
 
 [tool.setuptools.packages.find]
 where = ["src"]

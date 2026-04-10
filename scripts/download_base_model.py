@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-"""Download the base model to the Helios SCRATCH filesystem.
+"""Download the base model to the SCRATCH filesystem.
 
 The HF repo for Gemma 4 E4B is gated, so `HF_TOKEN` must be set in `.env`
 or in the environment. This script uses `snapshot_download` so that a
 partial failure can be resumed.
 
 Usage:
-    python scripts/download_base_model.py --repo google/gemma-4-E4B --dest $BIELIK_R_MODELS
+    python scripts/download_base_model.py --repo google/gemma-4-E4B --dest $GEMMA4_PL_MODELS
     python scripts/download_base_model.py --dry-run
 """
 
@@ -28,7 +28,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--dest",
         type=Path,
-        default=Path(os.environ.get("BIELIK_R_MODELS", "./data/models")),
+        default=Path(os.environ.get("GEMMA4_PL_MODELS", "./data/models")),
         help="Destination directory on SCRATCH",
     )
     p.add_argument(

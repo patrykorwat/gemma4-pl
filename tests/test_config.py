@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from bielik_r.config import load_config
+from gemma4_pl.config import load_config
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 

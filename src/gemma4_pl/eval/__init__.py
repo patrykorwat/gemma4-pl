@@ -6,6 +6,6 @@ and optionally runs a few sanity generation probes. Richer benchmarks
 `scripts/run_eval.py`.
 """
 
-from bielik_r.eval.perplexity import PerplexityResult, compute_perplexity
+from gemma4_pl.eval.perplexity import PerplexityResult, compute_perplexity
 
 __all__ = ["PerplexityResult", "compute_perplexity"]

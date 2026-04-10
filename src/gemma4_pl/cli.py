@@ -15,7 +15,7 @@ from pathlib import Path
 
 import typer
 
-app = typer.Typer(add_completion=False, help="gemma4-fine-tuning CLI")
+app = typer.Typer(add_completion=False, help="gemma4-pl CLI")
 
 
 @app.command()
@@ -35,12 +35,12 @@ def sft(
     output_dir: Path = typer.Option(Path("checkpoints/sft")),
 ) -> None:
     """Run SFT locally (for smoke tests, real runs go through SLURM)."""
-    from bielik_r.training.sft import main as run_sft
+    from gemma4_pl.training.sft import main as run_sft
 
     import sys
 
     sys.argv = [
-        "bielik_r.training.sft",
+        "gemma4_pl.training.sft",
         "--config",
         str(config),
         "--output_dir",

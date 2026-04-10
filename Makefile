@@ -1,4 +1,4 @@
-# Convenience targets. Most real work runs via SLURM on Helios,
+# Convenience targets. Most real work runs via SLURM on the GPU cluster,
 # these are for local dev, data prep, and quick interactive checks.
 
 PY ?= python

@@ -1,4 +1,4 @@
-"""Config loading and merging for Bielik-R.
+"""Config loading and merging for gemma4-pl.
 
 All stage configs live under `config/` as YAML files that resolve a
 `defaults: [base]` list at load time. We use OmegaConf directly instead of
@@ -8,7 +8,7 @@ directory rewriting interferes with SLURM log paths.
 
 Example:
 
-    from bielik_r.config import load_config
+    from gemma4_pl.config import load_config
     cfg = load_config("config/sft.yaml")
     print(cfg.model.name_or_path)
 """

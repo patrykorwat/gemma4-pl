@@ -1,6 +1,6 @@
 """Dataset loaders for the Polish text corpus and optional CKE slice."""
 
-from bielik_r.data.loaders import (
+from gemma4_pl.data.loaders import (
     CkeRecord,
     TextRecord,
     load_cke_dataset,

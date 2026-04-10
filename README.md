@@ -1,33 +1,29 @@
-# gemma4-fine-tuning
+# gemma4-pl
 
-Polish language adaptation of `google/gemma-4-E4B` on the Helios cluster. The main training corpus is a Polish text database (web, literary, and curated Polish text). The project produces a Polish fluent base model suitable for downstream instruction tuning.
+Polish language adaptation of `google/gemma-4-E4B`. The main training corpus is a Polish text database (web, literary, and curated Polish text). The project produces a Polish fluent base model suitable for downstream instruction tuning.
 
 ## Scope
 
 The fine tuning stage targets language quality in Polish, not reasoning. Specifically:
 
 1. Continued training on a large Polish text corpus (primary data source).
-2. Optional light instruction mix drawn from CKE matura examples at most (no Formulo reasoning traces, no synthetic chain of thought data).
-3. Evaluation on Polish language benchmarks (perplexity on held out Polish text, PolEval tasks, MMLU PL, a few Matura style sanity checks).
+2. Optional light instruction mix drawn from CKE matura examples at most (no reasoning trace data, no synthetic chain of thought).
+3. Evaluation on Polish language benchmarks (perplexity on a held out Polish text shard, PolEval tasks, MMLU PL, a few Matura style sanity checks).
 
-RLVR, GenRM, and RLHF stages are explicitly out of scope for the first iteration and are not scaffolded in the active configs.
+## Target hardware
 
-## Target cluster: Helios (PLGrid)
+The build targets aarch64 ARM GH200 Grace Hopper nodes with a SLURM scheduler. Account, partition, and storage paths are configured via environment variables and are not hard coded.
 
-The build targets the aarch64 ARM side of Helios (GH200 Grace Hopper superchip) with the SLURM scheduler.
-
-Modules used: `GCC/13.2.0`, `Python/3.11.5`, `CUDA/12.9.1`, `cuDNN/9.19.1.2-CUDA-12.9.1`, `NVHPC/25.9-CUDA-12.9.1`. Datasets and checkpoints live on `$SCRATCH`; code lives in `$HOME`. The canonical module load sequence is in `slurm/env.sh`.
-
-PLGrid docs: https://guide.plgrid.pl/
+Modules loaded by `slurm/env.sh`: `GCC/13.2.0`, `Python/3.11.5`, `CUDA/12.9.1`, `cuDNN/9.19.1.2-CUDA-12.9.1`, `NVHPC/25.9-CUDA-12.9.1`. Datasets and checkpoints live on `$SCRATCH`; code lives in `$HOME`.
 
 ## Repository layout
 
 ```
-gemma4-fine-tuning/
+gemma4-pl/
   README.md                 this file
   PLAN.md                   training plan
   pyproject.toml            package metadata, dependencies
-  requirements-helios.txt   pinned versions for aarch64 GH200
+  requirements-cluster.txt  pinned versions for aarch64 GH200
   Makefile                  common targets
   .env.example              environment variables template
 
@@ -36,7 +32,7 @@ gemma4-fine-tuning/
     sft.yaml                primary config for Polish corpus training
     eval.yaml
 
-  slurm/                    Helios SLURM submission scripts
+  slurm/                    SLURM submission scripts
     env.sh                  module loads, venv activation
     sft.sbatch
     eval.sbatch
@@ -48,26 +44,26 @@ gemma4-fine-tuning/
     prepare_sft_data.py
     run_eval.py
 
-  src/bielik_r/             Python package
+  src/gemma4_pl/             Python package
     data/                   dataset loaders and text pipeline
     training/               causal LM trainer
     eval/                   benchmark harnesses
 
   tests/                    pytest unit tests
-  data/                     datasets (gitignored, symlink to $SCRATCH on Helios)
+  data/                     datasets (gitignored, symlink to $SCRATCH)
   checkpoints/              training outputs (gitignored)
   logs/                     run logs (gitignored)
 ```
 
-## Quickstart on Helios
+## Quickstart on the cluster
 
 ```bash
-cd $HOME/gemma4-fine-tuning
+cd $HOME/gemma4-pl
 source slurm/env.sh
-python -m venv $SCRATCH/venvs/bielik-r
-source $SCRATCH/venvs/bielik-r/bin/activate
+python -m venv $SCRATCH/venvs/gemma4-pl
+source $SCRATCH/venvs/gemma4-pl/bin/activate
 pip install -U pip wheel
-pip install -r requirements-helios.txt
+pip install -r requirements-cluster.txt
 pip install -e .
 
 sbatch slurm/download_data.sbatch
@@ -86,4 +82,4 @@ python scripts/prepare_sft_data.py --dry-run
 
 ## Status
 
-Scaffolding stage. The training loop, Polish corpus adapter, and evaluation harness are in place at the interface level; real data paths and hyperparameters are pending a first smoke run on Helios.
+Scaffolding stage. The training loop, Polish corpus adapter, and evaluation harness are in place at the interface level; real data paths and hyperparameters are pending a first smoke run on the cluster.

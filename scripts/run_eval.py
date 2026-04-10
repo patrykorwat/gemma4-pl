@@ -7,7 +7,7 @@ and `multiple_choice` (simple log likelihood scorer over MMLU style
 records). Both kinds write aggregate metrics into a single JSON report.
 
 Usage:
-    python scripts/run_eval.py --checkpoint $BIELIK_R_CHECKPOINTS/sft --suite polish
+    python scripts/run_eval.py --checkpoint $GEMMA4_PL_CHECKPOINTS/sft --suite polish
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ import logging
 from dataclasses import dataclass
 from pathlib import Path
 
-from bielik_r.config import load_config
+from gemma4_pl.config import load_config
 
 log = logging.getLogger("scripts.run_eval")
 
@@ -33,7 +33,7 @@ class BenchmarkReport:
 
 
 def _run_perplexity(name: str, bench_cfg, checkpoint: Path) -> BenchmarkReport:
-    from bielik_r.eval.perplexity import compute_perplexity
+    from gemma4_pl.eval.perplexity import compute_perplexity
 
     result = compute_perplexity(
         checkpoint=checkpoint,

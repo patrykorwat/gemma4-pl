@@ -7,7 +7,7 @@ Wikipedia. Add more shards by passing `--source` multiple times, or by
 editing the `SOURCES` registry below.
 
 Usage:
-    python scripts/download_datasets.py --dest $BIELIK_R_DATA
+    python scripts/download_datasets.py --dest $GEMMA4_PL_DATA
     python scripts/download_datasets.py --source speakleash --source wikipedia
     python scripts/download_datasets.py --dry-run
 """
@@ -83,7 +83,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--dest",
         type=Path,
-        default=Path(os.environ.get("BIELIK_R_DATA", "./data")),
+        default=Path(os.environ.get("GEMMA4_PL_DATA", "./data")),
         help="Root dataset directory on SCRATCH",
     )
     p.add_argument(

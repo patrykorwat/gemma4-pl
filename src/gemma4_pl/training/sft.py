@@ -6,9 +6,9 @@ single `text` field produced by `scripts/prepare_sft_data.py`.
 
 Usage (invoked by `slurm/sft.sbatch`):
 
-    accelerate launch -m bielik_r.training.sft \
+    accelerate launch -m gemma4_pl.training.sft \
         --config config/sft.yaml \
-        --output_dir $BIELIK_R_CHECKPOINTS/sft
+        --output_dir $GEMMA4_PL_CHECKPOINTS/sft
 """
 
 from __future__ import annotations
@@ -18,9 +18,9 @@ import logging
 import os
 from pathlib import Path
 
-from bielik_r.config import load_config
+from gemma4_pl.config import load_config
 
-log = logging.getLogger("bielik_r.training.sft")
+log = logging.getLogger("gemma4_pl.training.sft")
 
 
 def parse_args() -> argparse.Namespace:

@@ -1,4 +1,4 @@
-# gemma4-fine-tuning: training plan
+# gemma4-pl: training plan
 
 The goal is to adapt `google/gemma-4-E4B` to Polish language. Fine tuning runs on a Polish text database (the main corpus). No Formulo reasoning traces are consumed. At most, CKE matura examples can enter a small instruction slice.
 
@@ -18,15 +18,15 @@ Primary corpus candidates (to be decided at download time, pick one or blend):
 
 Pipeline:
 
-1. Download raw shards to `$BIELIK_R_DATA/corpus/raw/`.
+1. Download raw shards to `$GEMMA4_PL_DATA/corpus/raw/`.
 2. Normalize Unicode (NFC), strip control characters, fix mojibake.
 3. Deduplicate with MinHash LSH (character 5 gram shingles, Jaccard threshold 0.8).
 4. Filter by language ID confidence (fastText lid.176, keep pl with score above 0.9).
 5. Filter by length (drop documents under 200 characters and over 200k characters).
 6. Tokenize with the Gemma 4 tokenizer, pack to fixed length sequences.
-7. Shuffle shards and write to `$BIELIK_R_DATA/corpus/packed/` as parquet or JSONL.
+7. Shuffle shards and write to `$GEMMA4_PL_DATA/corpus/packed/` as parquet or JSONL.
 
-Optional instruction slice (at most 5 percent of steps): CKE matura items reformatted as `question / answer` pairs. Source files go to `$BIELIK_R_DATA/cke/` and are treated as a separate dataset that is interleaved at the data loader level, not mixed into the pretraining shards.
+Optional instruction slice (at most 5 percent of steps): CKE matura items reformatted as `question / answer` pairs. Source files go to `$GEMMA4_PL_DATA/cke/` and are treated as a separate dataset that is interleaved at the data loader level, not mixed into the pretraining shards.
 
 ## Stage 2. Supervised fine tuning (causal LM)
 
@@ -68,7 +68,7 @@ Targets (relative to the Gemma 4 E4B base):
 - MMLU PL: at least 3 points absolute improvement
 - English MMLU: at most 2 points absolute drop
 
-## Compute budget (Helios)
+## Compute budget
 
 One GH200 node handles Gemma 4 E4B comfortably at bf16. Multi GPU is for throughput.
 

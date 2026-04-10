@@ -20,9 +20,9 @@ tokenizer:
   add_bos_token: true
 
 paths:
-  data_root: ${oc.env:BIELIK_R_DATA,./data}
-  checkpoint_root: ${oc.env:BIELIK_R_CHECKPOINTS,./checkpoints}
-  cache_root: ${oc.env:BIELIK_R_CACHE,./.cache}
+  data_root: ${oc.env:GEMMA4_PL_DATA,./data}
+  checkpoint_root: ${oc.env:GEMMA4_PL_CHECKPOINTS,./checkpoints}
+  cache_root: ${oc.env:GEMMA4_PL_CACHE,./.cache}
 
 logging:
   report_to: ["wandb"]
