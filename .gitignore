@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Data and artifacts (keep .gitkeep sentinels)
+data/*
+!data/.gitkeep
+checkpoints/*
+!checkpoints/.gitkeep
+logs/*
+!logs/.gitkeep
+wandb/
+outputs/
+rollouts/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Env secrets
+.env
+.env.local
+*.key
+hf_token
+wandb_key
+
+# SLURM artifacts
+slurm-*.out
+slurm-*.err
+core.*
+
+# HuggingFace cache (if accidentally placed inside repo)
+.cache/
+huggingface/

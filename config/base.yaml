@@ -1,0 +1,32 @@
+# Shared defaults, imported by the stage specific configs via OmegaConf.
+
+project:
+  name: gemma4-pl
+  run_group: gemma4-e4b
+  seed: 42
+
+model:
+  name_or_path: google/gemma-4-E4B
+  trust_remote_code: true
+  torch_dtype: bfloat16
+  attn_implementation: flash_attention_2
+  use_cache: false
+
+tokenizer:
+  name_or_path: ${model.name_or_path}
+  padding_side: right
+  truncation_side: right
+  model_max_length: 4096
+  add_bos_token: true
+
+paths:
+  data_root: ${oc.env:BIELIK_R_DATA,./data}
+  checkpoint_root: ${oc.env:BIELIK_R_CHECKPOINTS,./checkpoints}
+  cache_root: ${oc.env:BIELIK_R_CACHE,./.cache}
+
+logging:
+  report_to: ["wandb"]
+  wandb_project: gemma4-pl
+  wandb_entity: ${oc.env:WANDB_ENTITY,null}
+  log_level: info
+  logging_steps: 10

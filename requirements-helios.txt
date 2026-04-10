@@ -1,0 +1,57 @@
+# Pinned runtime dependencies for the Helios cluster (aarch64 GH200).
+#
+# Before running `pip install -r requirements-helios.txt` you must load the
+# modules and create the venv as described in `slurm/env.sh`:
+#
+#   module load GCC/13 Python/3.11.5 CUDA/12.9.1 cuDNN/9.19.1.2-CUDA-12.9.1
+#   python -m venv $SCRATCH/venvs/bielik-r
+#   source $SCRATCH/venvs/bielik-r/bin/activate
+#   pip install -U pip wheel
+#
+# PyTorch is installed separately from the NVIDIA index because the Grace
+# Hopper (sm_90) wheels are published there. Do NOT install torch from the
+# default PyPI index on aarch64, the wheel is wrong.
+
+--extra-index-url https://download.pytorch.org/whl/cu129
+
+torch==2.5.1
+torchvision==0.20.1
+torchaudio==2.5.1
+
+# Core HF stack
+transformers==4.56.1
+accelerate==1.0.1
+datasets==3.1.0
+tokenizers==0.20.3
+sentencepiece==0.2.0
+huggingface_hub==0.26.2
+peft==0.13.2
+trl==0.12.1
+safetensors==0.4.5
+
+# Training infra
+deepspeed==0.15.4
+flash-attn==2.7.0.post2 ; platform_machine == "aarch64"
+triton==3.1.0 ; platform_machine == "aarch64"
+
+# Verifiers and eval
+sympy==1.13.3
+numpy==1.26.4
+scipy==1.14.1
+pandas==2.2.3
+
+# Config, logging, ops
+pydantic==2.9.2
+omegaconf==2.3.0
+hydra-core==1.3.2
+pyyaml==6.0.2
+typer==0.12.5
+rich==13.9.4
+wandb==0.18.5
+jsonlines==4.0.0
+orjson==3.10.11
+tqdm==4.66.6
+
+# Dev tools (installed on login node only, not on compute nodes)
+pytest==8.3.3
+ruff==0.7.3

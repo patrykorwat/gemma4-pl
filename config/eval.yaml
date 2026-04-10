@@ -1,0 +1,33 @@
+defaults:
+  - base
+
+stage: eval
+
+suites:
+  all:
+    - polish_ppl
+    - mmlu_pl
+    - english_mmlu_drift
+  polish:
+    - polish_ppl
+    - mmlu_pl
+  drift:
+    - english_mmlu_drift
+
+benchmarks:
+  polish_ppl:
+    kind: perplexity
+    path: ${paths.data_root}/corpus/packed/val/part-0000.jsonl
+    text_field: text
+    max_seq_length: 2048
+    batch_size: 1
+  mmlu_pl:
+    kind: multiple_choice
+    path: ${paths.data_root}/eval/mmlu_pl.jsonl
+    samples_per_problem: 1
+    temperature: 0.0
+  english_mmlu_drift:
+    kind: multiple_choice
+    path: ${paths.data_root}/eval/mmlu_en_small.jsonl
+    samples_per_problem: 1
+    temperature: 0.0
