@@ -8,17 +8,18 @@ Download `google/gemma-4-E4B` (and optionally `google/gemma-4-E4B-it`) to `$SCRA
 
 ## Stage 1. Polish text corpus
 
-Primary corpus candidates (to be decided at download time, pick one or blend):
+Primary corpus: SpeakLeash. This is the same text pool that powers the Bielik models. It is not a HuggingFace dataset, it is streamed via the `speakleash` Python package. Shards are named (e.g. `plwiki`, `forum_wolnepodroze`, `wolnelektury_pl_txt`) and are pulled individually into local JSONL files under `$GEMMA4_PL_DATA/corpus/raw/speakleash/`.
 
-1. SpeakLeash Bielik corpus (Polish web and literary text, deduplicated)
-2. HPLT v2 Polish subset
-3. CulturaX Polish subset
-4. mC4 Polish subset (as a fallback)
-5. Polish Wikipedia dump (small, as a quality seed)
+Auxiliary corpus candidates (optional, can be blended in with `--source`):
+
+1. HPLT v2 Polish subset (`HPLT/HPLT2.0_cleaned`, `pol_Latn`)
+2. CulturaX Polish subset (`uonlp/CulturaX`, `pl`)
+3. Polish Wikipedia dump (`wikimedia/wikipedia`, `20231101.pl` or newer)
+4. OSCAR 2301 Polish subset (gated, needs HF_TOKEN)
 
 Pipeline:
 
-1. Download raw shards to `$GEMMA4_PL_DATA/corpus/raw/`.
+1. Download raw shards to `$GEMMA4_PL_DATA/corpus/raw/`. SpeakLeash shards land under `raw/speakleash/<shard>.jsonl`; HuggingFace sources land under `raw/<source>.jsonl`.
 2. Normalize Unicode (NFC), strip control characters, fix mojibake.
 3. Deduplicate with MinHash LSH (character 5 gram shingles, Jaccard threshold 0.8).
 4. Filter by language ID confidence (fastText lid.176, keep pl with score above 0.9).
@@ -80,7 +81,7 @@ Storage budget: 1 TB on `$SCRATCH` (base model, raw corpus shards, packed shards
 
 ## Open questions
 
-1. Which Polish corpus exactly? SpeakLeash Bielik shards vs HPLT v2 vs CulturaX vs a blend.
-2. Does `google/gemma-4-E4B` exist at that handle, or is the correct handle `google/gemma-3n-E4B-it`? Verify at download time.
+1. Which SpeakLeash shards go into the first run? The default set (`plwiki`, `forum_wolnepodroze`, `forum_gazeta`, `wolnelektury_pl_txt`) is a small sanity run. For a real training pass, decide whether to pull the full corpus with `--speakleash-all` or pick a larger curated subset.
+2. Does `google/gemma-4-E4B` load cleanly from the local HF cache on the aarch64 GH200 node? Verify at download time.
 3. Tokenizer sanity: how many tokens does "wyroznik" consume in the Gemma 4 tokenizer? If the vocabulary is very English heavy, consider a tokenizer extension before training.
 4. Do we need to hold out a specific set of sources (news, Wikipedia) as a clean eval split?

@@ -1,6 +1,6 @@
 # gemma4-pl
 
-Polish language adaptation of `google/gemma-4-E4B`. The main training corpus is a Polish text database (web, literary, and curated Polish text). The project produces a Polish fluent base model suitable for downstream instruction tuning.
+Polish language adaptation of `google/gemma-4-E4B`. The main training corpus is SpeakLeash, the same Polish text pool used for the Bielik models (web, literary, forums, curated text). The project produces a Polish fluent base model suitable for downstream instruction tuning.
 
 ## Scope
 
