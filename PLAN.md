@@ -8,7 +8,7 @@ Download `google/gemma-4-E4B` (and optionally `google/gemma-4-E4B-it`) to `$SCRA
 
 ## Stage 1. Polish text corpus
 
-Primary corpus: SpeakLeash. This is the same text pool that powers the Bielik models. It is not a HuggingFace dataset, it is streamed via the `speakleash` Python package. Shards are named (e.g. `plwiki`, `forum_wolnepodroze`, `wolnelektury_pl_txt`) and are pulled individually into local JSONL files under `$GEMMA4_PL_DATA/corpus/raw/speakleash/`.
+Primary corpus: SpeakLeash. This is the same text pool that powers the Bielik models. It is not a HuggingFace dataset, it is streamed via the `speakleash` Python package. Shards are named (e.g. `plwiki`, `1000_novels_corpus_CLARIN-PL`, numbered `*_cc` web crawls) and are pulled individually into local JSONL files under `$GEMMA4_PL_DATA/corpus/raw/speakleash/`. Use `python scripts/download_datasets.py --list-shards` to discover all available shard names.
 
 Auxiliary corpus candidates (optional, can be blended in with `--source`):
 
@@ -81,7 +81,7 @@ Storage budget: 1 TB on `$SCRATCH` (base model, raw corpus shards, packed shards
 
 ## Open questions
 
-1. Which SpeakLeash shards go into the first run? The default set (`plwiki`, `forum_wolnepodroze`, `forum_gazeta`, `wolnelektury_pl_txt`) is a small sanity run. For a real training pass, decide whether to pull the full corpus with `--speakleash-all` or pick a larger curated subset.
+1. Which SpeakLeash shards go into the first run? The current default is `plwiki` only. Run `--list-shards` to see all 838 available shards and pick a curated subset, or use `--speakleash-all` for the full corpus.
 2. Does `google/gemma-4-E4B` load cleanly from the local HF cache on the aarch64 GH200 node? Verify at download time.
 3. Tokenizer sanity: how many tokens does "wyroznik" consume in the Gemma 4 tokenizer? If the vocabulary is very English heavy, consider a tokenizer extension before training.
 4. Do we need to hold out a specific set of sources (news, Wikipedia) as a clean eval split?

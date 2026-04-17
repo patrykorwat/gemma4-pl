@@ -53,9 +53,6 @@ class CorpusSource:
 # hundreds of GB and should only be pulled with --speakleash-all.
 DEFAULT_SPEAKLEASH_SHARDS = [
     "plwiki",
-    "forum_wolnepodroze",
-    "forum_gazeta",
-    "wolnelektury_pl_txt",
 ]
 
 
@@ -134,6 +131,11 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Where SpeakLeash should cache its shard files. "
         "Defaults to <dest>/corpus/speakleash_cache",
+    )
+    p.add_argument(
+        "--list-shards",
+        action="store_true",
+        help="Connect to SpeakLeash, list all available shard names, and exit.",
     )
     p.add_argument(
         "--dry-run",
@@ -233,9 +235,11 @@ def _pull_speakleash(
 
     missing = [name for name in selected_names if name not in available]
     if missing:
+        all_names = sorted(available)
         raise ValueError(
-            f"Unknown SpeakLeash shards: {missing}. "
-            f"Available examples: {sorted(available)[:10]}..."
+            f"Unknown SpeakLeash shards: {missing}.\n"
+            f"Available shards ({len(all_names)} total):\n"
+            + "\n".join(f"  - {n}" for n in all_names)
         )
 
     for name in selected_names:
@@ -270,6 +274,24 @@ def _pull_speakleash(
         print(f"[download_datasets] speakleash shard={name} wrote={kept} rows")
 
 
+def _list_speakleash_shards(cache_dir: Path) -> None:
+    """Print every available SpeakLeash shard and exit."""
+    try:
+        from speakleash import Speakleash
+    except ImportError as exc:
+        raise RuntimeError(
+            "The `speakleash` package is required. "
+            "Install it with `pip install speakleash`."
+        ) from exc
+
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    sl = Speakleash(str(cache_dir))
+    available = sorted(d.name for d in sl.datasets)
+    print(f"SpeakLeash shards ({len(available)} total):")
+    for name in available:
+        print(f"  {name}")
+
+
 def run(
     dest: Path,
     sources: list[str],
@@ -277,11 +299,17 @@ def run(
     speakleash_shards: list[str] | None = None,
     speakleash_all: bool = False,
     speakleash_cache: Path | None = None,
+    list_shards: bool = False,
 ) -> None:
+    sl_cache = speakleash_cache or (dest / "corpus" / "speakleash_cache")
+
+    if list_shards:
+        _list_speakleash_shards(sl_cache)
+        return
+
     selected = sources or ["speakleash"]
     raw_dir = dest / "corpus" / "raw"
     cke_dir = dest / "cke"
-    sl_cache = speakleash_cache or (dest / "corpus" / "speakleash_cache")
 
     print(f"[download_datasets] dest={dest}")
     print(f"[download_datasets] selected={selected}")
@@ -322,6 +350,7 @@ def main() -> None:
         speakleash_shards=args.speakleash_shard,
         speakleash_all=args.speakleash_all,
         speakleash_cache=args.speakleash_cache,
+        list_shards=args.list_shards,
     )
 
 
